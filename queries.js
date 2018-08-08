@@ -1,4 +1,4 @@
-const database = require("./database-connection");
+const database = require('./database-connection');
 
 module.exports = {
     list(){
@@ -12,7 +12,7 @@ module.exports = {
         //record => record[0] returns an object and removes the surrounding array
     },
     update(id, coffee){
-        return database('coffee').update(coffee).where('id',id).returning('*').then(record => record[0])
+        return database('coffee').where('id',id).update(coffee).returning('*').then(record => record[0]);
     },
     delete(id){
         return database('coffee').delete().where('id',id);

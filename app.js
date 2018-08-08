@@ -29,20 +29,20 @@ app.post('/', (request, response, next) => {
 });
 
 app.delete('/:id', (request, response, next) => {
-    queries.delete(request.params.id, request.body).then(coffee => {
-        response.json({coffee: coffee[0]});
+    queries.delete(request.params.id).then(() => {
+        response.status(204).json({deleted: true});
     }).catch(next);
 });
 
 app.put('/:id', (request, response, next) => {
     queries.update(request.params.id, request.body).then(coffee => {
-        response.json({coffee: coffee[0]});
+        response.json({coffee});
     }).catch(next);
 });
 
-app.use((err, request, response, next) => {
+app.use((request, response, next) => {
     const err = new Error('Not Found');
-    error.status = 404;
+    err.status = 404;
     next(err);
 });
 
@@ -50,7 +50,7 @@ app.use((err, request, response, next) => {
     response.status(err.status || 500);
     response.json({
         message: err.message,
-        error: request.app.get('env') === 'development' ? error. stack : {}
+        error: request.app.get('env') === 'development' ? err.stack : {}
     });
 });
 
